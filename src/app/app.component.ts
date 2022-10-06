@@ -44,5 +44,6 @@ export class AppComponent {
   discard() {
     localStorage.removeItem('groupedTimeTrack');
     this.loadRows();
+    location.reload();
   }
 }

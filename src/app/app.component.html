@@ -1,5 +1,6 @@
 <section class="section">
   <div class="container">
+    <button class="button is-danger" (click)="discard()">Discard All</button>
     <div class="table" *ngFor="let group of groupedRows">
      <app-time-table [group]="group"></app-time-table>
     </div>
