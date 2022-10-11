@@ -60,7 +60,7 @@
       <th><span>{{row.dateGroup | date:'shortDate'}}</span></th>
       <th><input class="input is-small" type="text" [placeholder]="row.timeTrack.task" [(ngModel)]="row.timeTrack.task" (ngModelChange)="autoSave()"></th>
       <th><input class="input is-small" type="text" [placeholder]="row.timeTrack.description" [(ngModel)]="row.timeTrack.description" (ngModelChange)="autoSave()"></th>
-      <th><input class="input is-small" type="text" [placeholder]="row.timeTrack.timeSpent" [(ngModel)]="row.timeTrack.timeSpent" (ngModelChange)="calculateRowTime(row)"></th>
+      <th><input class="input is-small" type="text" [placeholder]="row.timeTrack.timeSpent" [(ngModel)]="row.timeTrack.timeSpent" (ngModelChange)="updateTimeSpent(row)"></th>
       <th><app-time-picker [(pickedTime)]="row.timeTrack.startTime" (pickedTimeChange)="updateStartTime($event, row)"></app-time-picker></th>
       <th><app-time-picker [pickedTime]="row.timeTrack.endTime" (pickedTimeChange)="updateEndTime($event, row)"></app-time-picker></th>
       <th>{{row.timeTrack.totalTime}}</th>

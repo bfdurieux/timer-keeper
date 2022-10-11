@@ -122,4 +122,37 @@ export class TimeTableComponent implements OnInit {
     row.timeTrack.endTime = time;
     this.calculateRowTime(row);
   }
+
+  updateTimeSpent(row: IRow) {
+    if(row.timeTrack.timeSpent == undefined || row.timeTrack.timeSpent == '') {
+      row.timeTrack.totalTime = '00:00';
+      return;
+    }
+
+    let time: {hour: number, minute: number} = {hour: 0, minute: 0};
+    let split = [];
+
+    if(row.timeTrack.timeSpent.indexOf(':') != -1) {
+      split = row.timeTrack.timeSpent.split(':');
+      time.hour = parseInt(split[0]) != NaN ? +split[0] : 0;;
+      time.minute = parseInt(split[1]) != NaN ? +split[1] : 0;;
+    } else if(row.timeTrack.timeSpent.indexOf('h') != -1) {
+      split = row.timeTrack.timeSpent.split('h');
+      split[1] = split[1].replace(/[^0-9\.]+/g, '');
+      time.hour = parseInt(split[0]) != NaN ? +split[0] : 0;
+      time.minute = parseInt(split[1]) != NaN ? +split[1] : 0;
+    } else {
+      time.minute = parseInt(row.timeTrack.timeSpent.replace(/[^0-9\.]+/g, ''));
+    }
+
+    let toHours = '';
+    if(time.minute > 59) {
+      toHours = this.toHours(time.minute);
+      let minuteHours = toHours.split(':');
+      time.hour += +minuteHours[0];
+      time.minute = +minuteHours[1];
+    }
+
+    row.timeTrack.totalTime = `${time.hour}:${time.minute}`;
+  }
 }
