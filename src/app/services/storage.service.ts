@@ -14,8 +14,6 @@ export class StorageService {
   loadRows(): any[] {
     let storedData = JSON.parse(localStorage.getItem(STORAGE_KEY));
 
-    console.log(storedData);
-
     if(storedData != undefined && storedData != '')
       return storedData;
     else
@@ -28,7 +26,6 @@ export class StorageService {
 
   save(rows: IRow[]) {
     let jsonRows = JSON.stringify(rows);
-    console.log(jsonRows);
     localStorage.setItem(STORAGE_KEY, jsonRows);
   }
 

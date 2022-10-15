@@ -29,6 +29,7 @@ export class TimeReportComponent implements OnInit {
   ngOnInit(): void {
     this.rows = this.storageService.loadRows();
     this.groupedRows = utils.groupRowsByDate(this.rows);
+    console.log(this.groupedRows);
   }
 
   discard() {

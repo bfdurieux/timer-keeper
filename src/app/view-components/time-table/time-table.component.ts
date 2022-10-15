@@ -1,6 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { IRow, ITimeTrack } from '../../interfaces/ITimeTrack';
-import { utils } from '../../utils/utils';
+import { Component, Input } from '@angular/core';
+import { IRow } from '../../interfaces/ITimeTrack';
 import { StorageService } from '../../services/storage.service';
 
 @Component({
@@ -8,48 +7,14 @@ import { StorageService } from '../../services/storage.service';
   templateUrl: './time-table.component.html',
   styleUrls: ['./time-table.component.css']
 })
-export class TimeTableComponent implements OnInit {
+export class TimeTableComponent {
   @Input() group: IRow[] = [];
-
-  defaultTimeTrack: ITimeTrack = {
-    guid: utils.generateNewGuid()
-  }
-
-  defaultRow: IRow = {
-    guid: utils.generateNewGuid(),
-    dateGroup: new Date(),
-    timeTrack: this.defaultTimeTrack
-  }
-  rows: IRow[] = [];
-  groupedRows:any[] = [];
 
   constructor(private storageService: StorageService) { }
 
-  ngOnInit(): void {
-    this.loadRows();
-    this.groupedRows = utils.groupRowsByDate(this.rows);
-  }
-
-  addNewRow(dateGroup: string) {
-    this.rows.push(this.defaultRow);
-
-    this.autoSave();
-  }
-
-  removeRow(row: IRow) {
-    this.rows.splice(this.rows.findIndex(x => x.guid == row.guid), 1);
-
-    this.autoSave();
-  }
-
   autoSave() {
-    this.storageService.save(this.rows);
+    this.storageService.save(this.group);
   }
-
-  loadRows() {
-    this.rows = this.storageService.loadRows();
-  }
-
 
   calculateRowTime(row: IRow) {
     if(row.timeTrack.timeSpent != undefined && row.timeTrack.timeSpent != '0')
@@ -82,27 +47,8 @@ export class TimeTableComponent implements OnInit {
     let strMin = min.toString();
     strHour = strHour.padStart(2, '0');
     strMin = strMin.padStart(2, '0');
-    console.log(strHour + ':' + strMin)
+
     return strHour + ':' + strMin;
-  }
-
-  discard() {
-    this.storageService.discardAll();
-    this.rows = this.storageService.loadRows();
-  }
-
-  saveRow(row: IRow) {
-    let date = new Date();
-    date.setDate(parseInt(row.timeTrack.timeSpent));
-    row.dateGroup = date;
-    this.autoSave();
-  }
-
-  getDate(row: IRow) {
-    if(row?.dateGroup != undefined)
-      return new Date(row.dateGroup).getDate();
-    else
-      return '';
   }
 
   updateStartTime(time: string, row: IRow) {
@@ -126,8 +72,8 @@ export class TimeTableComponent implements OnInit {
 
     if(row.timeTrack.timeSpent.indexOf(':') != -1) {
       split = row.timeTrack.timeSpent.split(':');
-      time.hour = parseInt(split[0]) != NaN ? +split[0] : 0;;
-      time.minute = parseInt(split[1]) != NaN ? +split[1] : 0;;
+      time.hour = parseInt(split[0]) != NaN ? +split[0] : 0;
+      time.minute = parseInt(split[1]) != NaN ? +split[1] : 0;
     } else if(row.timeTrack.timeSpent.indexOf('h') != -1) {
       split = row.timeTrack.timeSpent.split('h');
       split[1] = split[1].replace(/[^0-9\.]+/g, '');
