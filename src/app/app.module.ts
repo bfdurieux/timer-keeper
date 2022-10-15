@@ -4,10 +4,11 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { ViewComponentsModule } from './view-components/view-components.module';
 import { FormsModule } from '@angular/forms';
+import { ClickOutsideDirective } from './utils/directives/click-outside.directive';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,

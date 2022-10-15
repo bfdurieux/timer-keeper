@@ -1,4 +1,4 @@
-<div class="dropdown" [ngClass]="{'is-active': isOpen}">
+<div class="dropdown" [ngClass]="{'is-active': isOpen}" (clickOutside)="close($event)">
   <div class="dropdown-trigger">
     <button class="button time-button" aria-haspopup="true" aria-controls="dropdown-menu2" (click)="toggleOpen()">
       <span>{{pickedTime}}</span>

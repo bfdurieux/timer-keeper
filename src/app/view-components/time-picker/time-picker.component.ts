@@ -6,6 +6,8 @@ import { Component, EventEmitter, HostListener, Input, Output } from '@angular/c
   styleUrls: ['./time-picker.component.css']
 })
 export class TimePickerComponent {
+  isOpen: boolean = false;
+
   _pickedTime: string;
   @Input() set pickedTime(value: string) {
     this._pickedTime = value;
@@ -22,8 +24,6 @@ export class TimePickerComponent {
       this.toggleOpen();
   }
 
-  isOpen: boolean = false;
-
   getCurrentTime() {
     return new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
   }
@@ -31,6 +31,12 @@ export class TimePickerComponent {
   toggleOpen() {
     this._pickedTime = this._pickedTime ?? this.getCurrentTime();
     this.isOpen = !this.isOpen;
+    this.pickedTimeChange.emit(this._pickedTime);
+  }
+
+  close(event: any) {
+    event.stopPropagation();
+    this.isOpen = false;
     this.pickedTimeChange.emit(this._pickedTime);
   }
 }
