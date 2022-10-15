@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { IRow } from '../../interfaces/ITimeTrack';
 import { StorageService } from '../../services/storage.service';
+import { utils } from '../../utils/utils';
 
 @Component({
   selector: 'app-time-table',
@@ -9,8 +10,13 @@ import { StorageService } from '../../services/storage.service';
 })
 export class TimeTableComponent {
   @Input() group: IRow[] = [];
+  date: Date;
 
   constructor(private storageService: StorageService) { }
+
+  ngOnInit() {
+    this.date = this.group[0]?.dateGroup ?? new Date();
+  }
 
   autoSave() {
     this.storageService.save(this.group);
@@ -92,5 +98,16 @@ export class TimeTableComponent {
     }
 
     row.timeTrack.totalTime = `${time.hour}:${time.minute}`;
+  }
+
+  addRow() {
+    let guid = utils.generateNewGuid();
+    this.group.push({
+      guid: guid,
+      dateGroup: this.date,
+      timeTrack: {
+        guid: guid
+      }
+    })
   }
 }
