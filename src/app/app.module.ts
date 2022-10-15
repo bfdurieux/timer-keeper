@@ -1,10 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
 import { AppComponent } from './app.component';
 import { ViewComponentsModule } from './view-components/view-components.module';
 import { FormsModule } from '@angular/forms';
-import { ClickOutsideDirective } from './utils/directives/click-outside.directive';
+import { RouterModule } from '@angular/router';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
@@ -13,7 +13,9 @@ import { ClickOutsideDirective } from './utils/directives/click-outside.directiv
   imports: [
     BrowserModule,
     ViewComponentsModule,
-    FormsModule
+    FormsModule,
+    RouterModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]

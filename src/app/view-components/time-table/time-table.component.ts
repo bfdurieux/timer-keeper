@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { IRow, ITimeTrack } from '../../interfaces/ITimeTrack';
 import { utils } from '../../utils/utils';
+import { StorageService } from '../../services/storage.service';
 
 @Component({
   selector: 'app-time-table',
@@ -22,7 +23,7 @@ export class TimeTableComponent implements OnInit {
   rows: IRow[] = [];
   groupedRows:any[] = [];
 
-  constructor() { }
+  constructor(private storageService: StorageService) { }
 
   ngOnInit(): void {
     this.loadRows();
@@ -42,21 +43,12 @@ export class TimeTableComponent implements OnInit {
   }
 
   autoSave() {
-    localStorage.setItem('groupedTimeTrack', JSON.stringify(this.rows));
+    this.storageService.save(this.rows);
   }
 
   loadRows() {
-    let storedData = JSON.parse(localStorage.getItem('groupedTimeTrack'));
-
-    if(storedData != undefined && storedData != '')
-      this.rows = storedData;
-    else
-      this.rows = [{
-        dateGroup: new Date,
-        guid: utils.generateNewGuid(),
-        timeTrack: {guid: utils.generateNewGuid()}
-      }]
-    }
+    this.rows = this.storageService.loadRows();
+  }
 
 
   calculateRowTime(row: IRow) {
@@ -95,8 +87,8 @@ export class TimeTableComponent implements OnInit {
   }
 
   discard() {
-    localStorage.removeItem('groupedTimeTrack');
-    this.loadRows();
+    this.storageService.discardAll();
+    this.rows = this.storageService.loadRows();
   }
 
   saveRow(row: IRow) {
