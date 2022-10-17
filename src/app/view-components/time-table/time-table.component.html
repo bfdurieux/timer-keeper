@@ -12,6 +12,7 @@
       <th>Start</th>
       <th>End</th>
       <th>Total Time</th>
+      <th>Action</th>
     </tr>
     <tr *ngFor="let row of group">
       <th><span>{{row.dateGroup | date:'shortDate'}}</span></th>
@@ -21,6 +22,11 @@
       <th><app-time-picker [(pickedTime)]="row.timeTrack.startTime" (pickedTimeChange)="updateStartTime($event, row)"></app-time-picker></th>
       <th><app-time-picker [pickedTime]="row.timeTrack.endTime" (pickedTimeChange)="updateEndTime($event, row)"></app-time-picker></th>
       <th>{{row.timeTrack.totalTime}}</th>
+      <th>
+        <button class="button is-danger mt-1" (click)="removeRow(row)">
+          Remove row
+        </button>
+      </th>
     </tr>
     </thead>
   </table>

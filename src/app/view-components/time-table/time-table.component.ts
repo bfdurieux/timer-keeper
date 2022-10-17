@@ -110,4 +110,8 @@ export class TimeTableComponent {
       }
     })
   }
+
+  removeRow(row: IRow) {
+    this.group = this.group.filter(x => x.guid != row.guid);
+  }
 }
