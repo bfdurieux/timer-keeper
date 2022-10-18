@@ -1,8 +1,15 @@
 .inputs {
   display: flex;
   flex-direction: row;
+  max-width: fit-content;
 }
 
 .time-button {
   min-width: 80px;
+  max-width: 80px;
+  height: 30px;
+}
+
+.dropdown-menu {
+  min-width: 80px !important;
 }

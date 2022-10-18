@@ -5,9 +5,10 @@ import { FormsModule } from '@angular/forms';
 import { TimePickerComponent } from './time-picker/time-picker.component';
 import { DirectivesModule } from '../utils/directives/directives.module';
 import { TimeReportComponent } from './time-report/time-report.component';
+import { DatePickerComponent } from './date-picker/date-picker.component';
 
 @NgModule({
-  declarations: [TimeTableComponent, TimePickerComponent, TimeReportComponent],
+  declarations: [TimeTableComponent, TimePickerComponent, TimeReportComponent, DatePickerComponent],
   exports: [
     TimeTableComponent,
     TimePickerComponent
