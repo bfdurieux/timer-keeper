@@ -1,4 +1,5 @@
 import { IRow } from '../interfaces/ITimeTrack';
+import { ITime } from '../interfaces/ITime';
 
 export class utils {
 
@@ -11,6 +12,12 @@ export class utils {
 
   static getDateDifference(end: Date, start: Date): string {
      return Math.abs(new Date(end).getTime() - new Date(start).getTime()).toString();
+  }
+
+  static getTimeSum(timeA: string, timeB: string): string {
+    let a = utils.unformattedStringToTime(timeA);
+    let b = utils.unformattedStringToTime(timeB);
+    return utils.timeToString({ hour: a.hour + b.hour, minute: a.minute + b.minute })
   }
 
   static generateNewGuid() {
@@ -28,5 +35,58 @@ export class utils {
       groupedRows.push(rows.filter(x => new Date(x.dateGroup).getDate() == date));
     })
     return groupedRows;
+  }
+
+  static unformattedStringToTime(timeString: string): ITime {
+    let split = this.splitTime(timeString);
+    let time: ITime = { hour: split[0], minute: split[1] }
+
+    return this.minutesToHours(time);
+  }
+
+  static timeToString(time: ITime): string {
+    return time.hour.toString().padStart(2, '0') + ':' + time.minute.toString().padStart(2, '0');
+  }
+
+  static splitTime(value: string): number[] {
+    let arr = []
+    if (this.hasSeparator(value, ':'))
+      arr = value.split(':');
+    else if (this.hasSeparator(value, 'h'))
+      arr = value.split('h');
+    else
+      arr = ['00', value];
+
+    arr[1] = this.removeNonDigitCharacters(arr[1]);
+    arr[0] = +arr[0];
+    arr[1] = +arr[1];
+    return arr;
+  }
+  static hasSeparator(value: string, separator: string): boolean {
+    return value.indexOf(separator) != -1;
+  }
+
+  static convertTimeFormat(value: string): string {
+    //this should receive 00h00m and return 00:00;
+    return '';
+  }
+
+  static minutesToHours(time: ITime): ITime {
+    let minutes = time.minute;
+
+    if(minutes <= 59)
+      return time;
+    else {
+      let hour: number = Math.floor(minutes / 60);
+      let min: number = minutes % 60;
+      time.hour += hour;
+      time.minute = min;
+    }
+
+    return time;
+  }
+
+  static removeNonDigitCharacters(value: string): string {
+    return value.replace(/[^0-9\.]+/g, '');
   }
 }
