@@ -1,8 +1,16 @@
+
+<section>
+  <div class="container">
+    <button class="button is-danger discard-button" (click)="discard()">Discard All</button>
+  </div>
+</section>
 <section class="section">
   <div class="container">
-    <button class="button is-danger" (click)="discard()">Discard All</button>
     <div class="table" *ngFor="let group of groupedRows">
-      <app-time-table [group]="group"></app-time-table>
+      <div class="box">
+        <span class="tag is-large">{{group.dateGroup | date: 'shortDate'}}</span>
+        <app-time-table [group]="group.rows"></app-time-table>
+      </div>
     </div>
   </div>
 </section>

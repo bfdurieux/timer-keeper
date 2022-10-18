@@ -3,12 +3,12 @@ import { ITime } from '../interfaces/ITime';
 
 export class utils {
 
-  static getDateString(date?: Date): string {
-    if(date != undefined)
-      return date.getDate().toString();
-
-    return new Date().getDate().toString();
-  }
+  // static getDateString(date?: Date): string {
+  //   if(date != undefined)
+  //     return date.getDate().toString();
+  //
+  //   return new Date().getDate().toString();
+  // }
 
   static getDateDifference(end: Date, start: Date): string {
      return Math.abs(new Date(end).getTime() - new Date(start).getTime()).toString();
@@ -30,11 +30,17 @@ export class utils {
 
   static groupRowsByDate(rows: IRow[]) {
     let groupedRows = [];
-    let distinctDates =  [...new Set(rows.map(x => new Date(x.dateGroup).getDate()))];
+    let dates = rows.map(x => utils.getDateString(x.dateGroup.toString()));
+    let distinctDates =  [...new Set(dates)];
     distinctDates.forEach(date => {
-      groupedRows.push(rows.filter(x => new Date(x.dateGroup).getDate() == date));
+      groupedRows.push(rows.filter(x => utils.getDateString(x.dateGroup.toString()) == date));
     })
     return groupedRows;
+  }
+
+  static getDateString(date: string): string {
+    //example format 1968-11-16
+    return date.split('T')[0];
   }
 
   static unformattedStringToTime(timeString: string): ITime {
@@ -49,7 +55,7 @@ export class utils {
   }
 
   static splitTime(value: string): number[] {
-    let arr = []
+    let arr;
     if (this.hasSeparator(value, ':'))
       arr = value.split(':');
     else if (this.hasSeparator(value, 'h'))

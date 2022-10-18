@@ -1,6 +1,8 @@
-<button class="button is-primary mt-1" (click)="addRow()">
-  Add new row
-</button>
+<div class="container toolbar">
+  <button class="button is-primary mt-1 add" (click)="addRow()">
+    <span class = "icon is-large"><i class = "mdi mdi-light mdi-plus"></i></span>
+  </button>
+</div>
 <div class="table">
   <table class="table is-hoverable is-fullwidth">
     <thead>
@@ -15,7 +17,10 @@
       <th>Action</th>
     </tr>
     <tr *ngFor="let row of group">
-      <th><span>{{row.dateGroup | date:'shortDate'}}</span></th>
+      <th>
+        <input type="text" class="input is-small" [placeholder]="row.dateGroup" [(ngModel)]="row.dateGroup">
+<!--        <span>{{row.dateGroup | date:'shortDate'}}</span>-->
+      </th>
       <th><input class="input is-small" type="text" [placeholder]="row.timeTrack.task" [(ngModel)]="row.timeTrack.task" (ngModelChange)="autoSave()"></th>
       <th><input class="input is-small" type="text" [placeholder]="row.timeTrack.description" [(ngModel)]="row.timeTrack.description" (ngModelChange)="autoSave()"></th>
       <th><input class="input is-small" type="text" [placeholder]="row.timeTrack.timeSpent" [(ngModel)]="row.timeTrack.timeSpent" (ngModelChange)="updateTimeSpent(row)"></th>
@@ -24,7 +29,7 @@
       <th>{{row.timeTrack.totalTime}}</th>
       <th>
         <button class="button is-danger mt-1" (click)="removeRow(row)">
-          Remove row
+          <span class = "icon is-large"><i class = "mdi mdi-light mdi-minus"></i></span>
         </button>
       </th>
     </tr>

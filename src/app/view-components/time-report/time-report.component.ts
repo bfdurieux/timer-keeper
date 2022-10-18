@@ -11,7 +11,7 @@ import { StorageService } from '../../services/storage.service';
 export class TimeReportComponent implements OnInit {
   title = 'Timer Keeper';
   rows: IRow[] = [];
-  groupedRows:any[] = [];
+  groupedRows: IRowGroup[] = [];
 
   constructor(private storageService: StorageService) {
   }
@@ -28,7 +28,14 @@ export class TimeReportComponent implements OnInit {
 
   ngOnInit(): void {
     this.rows = this.storageService.loadRows();
-    this.groupedRows = utils.groupRowsByDate(this.rows);
+    let groupedRows = utils.groupRowsByDate(this.rows);
+    groupedRows.forEach(group => {
+      this.groupedRows.push({
+        guid: utils.generateNewGuid(),
+        dateGroup: group[0].dateGroup ?? new Date(),
+        rows: group
+      })
+    })
     console.log(this.groupedRows);
   }
 
@@ -37,4 +44,10 @@ export class TimeReportComponent implements OnInit {
     this.rows = this.storageService.loadRows();
     location.reload();
   }
+}
+
+export interface IRowGroup {
+  guid: string;
+  rows: IRow[];
+  dateGroup: Date;
 }
