@@ -1,6 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IRow } from '../../interfaces/ITimeTrack';
-import { StorageService } from '../../services/storage.service';
 import { utils } from '../../utils/utils';
 
 @Component({
@@ -10,16 +9,19 @@ import { utils } from '../../utils/utils';
 })
 export class TimeTableComponent implements OnInit {
   @Input() group: IRow[] = [];
+  @Output() dateGroupChangedEvent: EventEmitter<void> = new EventEmitter<void>();
+  @Output() inputChangedEvent: EventEmitter<void> = new EventEmitter<void>();
   date: Date;
 
-  constructor(private storageService: StorageService) { }
+  constructor() { }
 
   ngOnInit() {
     this.date = this.group[0]?.dateGroup ?? new Date();
   }
 
   autoSave() {
-    this.storageService.save(this.group);
+    this.inputChangedEvent.emit();
+    // this.storageService.save(this.group);
   }
 
   calculateRowTime(row: IRow) {
@@ -53,17 +55,20 @@ export class TimeTableComponent implements OnInit {
   updateStartTime(time: string, row: IRow) {
     row.timeTrack.startTime = time;
     this.calculateRowTime(row);
+    this.autoSave();
   }
 
   updateEndTime(time: string, row:IRow) {
     row.timeTrack.endTime = time;
     this.calculateRowTime(row);
+    this.autoSave();
   }
 
   updateTimeSpent(row: IRow) {
     if(row.timeTrack.timeSpent == undefined || row.timeTrack.timeSpent == '') {
       row.timeTrack.totalTime = '00:00';
 
+      this.autoSave();
       return;
     }
 
@@ -72,10 +77,14 @@ export class TimeTableComponent implements OnInit {
 
     let time = utils.unformattedStringToTime(row.timeTrack.timeSpent);
     row.timeTrack.totalTime = utils.timeToString(time);
+    this.autoSave();
   }
 
   addRow() {
     let guid = utils.generateNewGuid();
+    debugger;
+    if(this.group == undefined)
+      this.group = [];
     this.group.push({
       guid: guid,
       dateGroup: this.date,
@@ -87,5 +96,12 @@ export class TimeTableComponent implements OnInit {
 
   removeRow(row: IRow) {
     this.group = this.group.filter(x => x.guid != row.guid);
+    this.autoSave();
+  }
+
+  setDate(event: any, row:any) {
+    row.dateGroup = new Date(event);
+    this.autoSave();
+    this.dateGroupChangedEvent.emit();
   }
 }

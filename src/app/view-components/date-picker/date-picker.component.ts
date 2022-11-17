@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { utils } from 'src/app/utils/utils';
 
 @Component({
@@ -7,6 +7,7 @@ import { utils } from 'src/app/utils/utils';
   styleUrls: ['./date-picker.component.css']
 })
 export class DatePickerComponent {
+  @Output() pickedDateChanged = new EventEmitter();
   utils = utils;
   _selectedDate: Date;
   @Input() set selectedDate(value: Date) {
@@ -16,7 +17,12 @@ export class DatePickerComponent {
   };
   value: string = '';
 
-  setDateValue() {
+  setDateValue(value: Date) {
     this.selectedDate = utils.stringToDate(this.value);
+  }
+
+  setDate($event: any) {
+    this._selectedDate = $event;
+    this.pickedDateChanged.emit(this._selectedDate);
   }
 }

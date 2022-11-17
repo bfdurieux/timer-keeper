@@ -5,11 +5,14 @@
   </div>
 </section>
 <section class="section">
-  <div class="container">
-    <div class="table" *ngFor="let group of groupedRows">
+  <app-date-picker [selectedDate]="newDateGroup" (pickedDateChanged)="newDateGroup = $event"></app-date-picker>
+  <button (click)="addNewDateGroup(newDateGroup)">New Date Group</button>
+  <div class="container" *ngFor="let group of groupedRows">
+    <div class="table">
       <div class="box">
         <span class="tag is-large">{{group.dateGroup | date: 'shortDate'}}</span>
-        <app-time-table [group]="group.rows"></app-time-table>
+        <app-time-table [group]="group.rows" (dateGroupChangedEvent)="recalculateDateGroups()"
+        (inputChangedEvent)="autoSave()"></app-time-table>
       </div>
     </div>
   </div>

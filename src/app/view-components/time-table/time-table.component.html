@@ -18,7 +18,7 @@
     </tr>
     <tr *ngFor="let row of group">
       <th>
-        <app-date-picker [selectedDate]="row.dateGroup"></app-date-picker>
+        <app-date-picker [selectedDate]="row.dateGroup" (pickedDateChanged)="setDate($event, row)"></app-date-picker>
       </th>
       <th><input class="input is-small" type="text" [placeholder]="row.timeTrack.task" [(ngModel)]="row.timeTrack.task" (ngModelChange)="autoSave()"></th>
       <th><input class="input is-small" type="text" [placeholder]="row.timeTrack.description" [(ngModel)]="row.timeTrack.description" (ngModelChange)="autoSave()"></th>

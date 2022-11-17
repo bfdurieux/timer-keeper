@@ -93,11 +93,11 @@ export class utils {
   }
 
   static removeNonDigitCharacters(value: string): string {
-    return value.replace(/[^0-9\.]+/g, '');
+    return value.replace(/[^0-9]+/g, '');
   }
 
   static stringToDate(value: string): Date {
     //do some parsing here to ISO format
-    return new Date();
+    return new Date(Date.parse(value));
   }
 }
