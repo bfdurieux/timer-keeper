@@ -1,5 +1,5 @@
-import { IRow } from '../interfaces/ITimeTrack';
 import { ITime } from '../interfaces/ITime';
+import { IRow } from '../interfaces/IRow';
 
 export class utils {
 
@@ -30,10 +30,10 @@ export class utils {
 
   static groupRowsByDate(rows: IRow[]) {
     let groupedRows = [];
-    let dates = rows.map(x => utils.getDateString(x.dateGroup.toString()));
+    let dates = rows.map(x => utils.getDateString(x.timeTrack.dateGroup.toString()));
     let distinctDates =  [...new Set(dates)];
     distinctDates.forEach(date => {
-      groupedRows.push(rows.filter(x => utils.getDateString(x.dateGroup.toString()) == date));
+      groupedRows.push(rows.filter(x => utils.getDateString(x.timeTrack.dateGroup.toString()) == date));
     })
     return groupedRows;
   }

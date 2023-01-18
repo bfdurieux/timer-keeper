@@ -3,7 +3,15 @@ import { RouterModule, Routes } from '@angular/router';
 import { TimeReportComponent } from './view-components/time-report/time-report.component';
 
 const routes: Routes = [
-  { path: 'report', component: TimeReportComponent }
+  {
+    path: '',
+    redirectTo: '/report',
+    pathMatch: 'full',
+  },
+  {
+    path: 'report',
+    component: TimeReportComponent
+  }
 ];
 
 @NgModule({

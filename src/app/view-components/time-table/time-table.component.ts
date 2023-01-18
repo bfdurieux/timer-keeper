@@ -65,6 +65,7 @@ export class TimeTableComponent implements OnInit {
   }
 
   updateTimeSpent(row: IRow) {
+    debugger;
     if(row.timeTrack.timeSpent == undefined || row.timeTrack.timeSpent == '') {
       row.timeTrack.totalTime = '00:00';
 
